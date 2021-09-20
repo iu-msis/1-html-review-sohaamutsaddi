@@ -6,6 +6,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="./css/styles.css">
+        <script src="https://unpkg.com/vue@next"></script>
     </head>
     <body>
         <div class="container-fluid p-0">
@@ -29,16 +30,22 @@
                     </ul>
                 </div>
             </nav>
-            
-            <div class="row d-flex justify-content-center mx-auto">
-              <img class="img-responsive mt-4 rounded-circle" src="./img/headshot.jpg" alt="headshot" style="height: 300px; width: auto;">
+        </div>
+        <div id="offerApp" >
+            <div class="d-flex justify-content-center mx-auto">
+                <img class="img-responsive mt-4 rounded-circle" v-bind:src="prettyimg" alt="headshot" style="height: 200px; width: auto;">
             </div>
-            <h1 class="text-center pt-md-2">Kathy Woods</h1>
+            <h1 class="text-center pt-md-2">{{person.name.first}} {{person.name.last}}</h1>
             <div class="row mx-md-5 px-md-5">
-                <h5 class="mt-2 font-weight-normal">
-                    Hello world! I'm Kathy. I was born in Canada on December 24, 1998. I am 22 years old, and I love animals. You can email me at <a href="kathy@gmail.com" class="text-decoration-none">kathy@gmail.com</a>. I love travelling and experimenting with food. My favourite trip was to Pairs, and I love Asian food. 
+                    <h5 class="mt-2 font-weight-normal">
+                    Hello world! I'm {{person.name.first}} {{person.name.last}}. I was born in {{person.location.city}}, {{person.location.state}}, {{person.location.country}} on {{prettyBirthday}} . I am {{person.dob.age}} years old, and I love animals. You can email me at <a v-bind:href="'mailto:'+person.email">{{person.email}}</a>. I love travelling and experimenting with food. My favourite trip was to Pairs, and I love Asian food. 
                 </h5>
             </div>
+            <form v-on:submit.prevent="fetchUserData" class="d-flex justify-content-center mx-auto">
+                <button class="btn btn-primary" type="submit">Refresh</button>
+            </form>
         </div>
+        <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+        <script src="./js/index.js"></script>
     </body>
 </html>
