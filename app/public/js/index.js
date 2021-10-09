@@ -1,38 +1,46 @@
-const Offer = {
+const SomeApp = {
   data() {
     return {
-      "person":undefined
-    } 
-  },
-
-  //like a getter function
-  computed:{
-    prettyBirthday(){
-      return dayjs(this.person.dob.date).format('DD MMMM YYYY') ;
-    },
-    prettyimg(){
-      return this.person.picture.large
+      students: [],
+      selectedStudent: null,
+      offers: []
     }
   },
+  computed: {},
+  methods: {
+      prettyData(d) {
+          return dayjs(d)
+          .format('D MMM YYYY')
+      },
+      prettyDollar(n) {
+          const d = new Intl.NumberFormat("en-US").format(n);
+          return "$ " + d;
+      },
+      selectStudent(s) {
+          if (s == this.selectedStudent) {
+              return;
+          }
+          this.selectedStudent = s;
+          this.offers = [];
+          this.fetchOfferData(this.selectedStudent);
+      },
+      fetchStudentData() {
+          fetch('/api/books/')
+          .then( response => response.json() )
+          .then( (responseJson) => {
+              console.log(responseJson);
+              this.students = responseJson;
+          })
+          .catch( (err) => {
+              console.error(err);
+          })
+      },
 
-  methods:{
-    fetchUserData(){
-      fetch('https://randomuser.me/api/')
-    .then(response => response.json())
-    .then ((parsedJson) => {
-      this.person = parsedJson.results[0]
-      console.log('Here')
-    })
-    .catch(err =>{
-      console.error(error)
-    });
-    }
   },
-
-  // This will fire after our vue app is created
-  created(){
-    this.fetchUserData();
+  created() {
+      this.fetchStudentData();
   }
+
 }
 
-Vue.createApp(Offer).mount('#offerApp');
+Vue.createApp(SomeApp).mount('#offerApp');
