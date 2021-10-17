@@ -35,81 +35,83 @@
                     </ul>
                 </div>
             </nav>
-            <h1 class="text-center pt-md-2">Books Available</h1>
 
-            <div id="offerApp" class="mt-4 mx-md-5">
-                <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Year Published</th>
-                        <th scope="col">Publisher</th>
-                        <th scope="col">Page count</th>
-                        <th scope="col">MSRP</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+            <div id="offerApp">
+                <h1 class="text-center pt-md-2">Books Available</h1>
+                <div class="mt-4 mx-md-5">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Year Published</th>
+                            <th scope="col">Publisher</th>
+                            <th scope="col">Page count</th>
+                            <th scope="col">MSRP</th>
+                          </tr>
+                        </thead>
                         <tbody>
-                            <tr v-for="s in students">
-                                <td>{{ s.title }}</td>
-                                <td>{{ s.author }}</td>
-                                <td>{{ s.yearpublished }}</td>
-                                <td>{{ s.publisher }}</td>
-                                <td>{{ s.pagecount }}</td>
-                                <td>{{ prettyDollar(s.msrp) }}</td>
-                            </tr>
+                            <tbody>
+                                <tr v-for="s in students">
+                                    <td>{{ s.title }}</td>
+                                    <td>{{ s.author }}</td>
+                                    <td>{{ s.yearpublished }}</td>
+                                    <td>{{ s.publisher }}</td>
+                                    <td>{{ s.pagecount }}</td>
+                                    <td>{{ prettyDollar(s.msrp) }}</td>
+                                </tr>
+                            </tbody>
                         </tbody>
-                    </tbody>
-                </table> 
-            </div>
-            <h1 class="text-center pt-md-4">Add Books</h1>
-            <div class="row my-4 mx-md-5 d-block">
-                <div class="col-md-4 col-md-offset-4 justify-content-center mx-auto">
-                    <form>
-                        <div class="form-group row">
-                            <label for="title" class="col-md-4 col-sm-2 col-form-label">Title</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="title" placeholder="Book Title">
+                    </table> 
+                </div>
+                <h1 class="text-center pt-md-4">Add Books</h1>
+                <div class="row my-4 mx-md-5 d-block">
+                    <div class="col-md-4 col-md-offset-4 justify-content-center mx-auto">
+                        <form form v-on:submit.prevent="postNewOffer">
+                            <div class="form-group row">
+                                <label for="title" class="col-md-4 col-sm-2 col-form-label">Title</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text"  v-model="offerForm.title" class="form-control" id="title" placeholder="Book Title">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="author" class="col-md-4 col-sm-2 col-form-label">Author</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="author" placeholder="Book Author">
+    
+                            <div class="form-group row">
+                                <label for="author" class="col-md-4 col-sm-2 col-form-label">Author</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text" v-model="offerForm.author" class="form-control" id="author" placeholder="Book Author">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="publish" class="col-md-4 col-sm-2 col-form-label">Year</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="publish" placeholder="Publish year">
+    
+                            <div class="form-group row">
+                                <label for="yearpublished" class="col-md-4 col-sm-2 col-form-label">Year</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text" v-model="offerForm.yearpublished" class="form-control" id="yearpublish" placeholder="Publish year">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="publisher" class="col-md-4 col-sm-2 col-form-label">Publisher</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="publisher" placeholder="Book Publisher">
+    
+                            <div class="form-group row">
+                                <label for="publisher" class="col-md-4 col-sm-2 col-form-label">Publisher</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text" v-model="offerForm.publisher" class="form-control" id="publisher" placeholder="Book Publisher">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="count" class="col-md-4 col-sm-2 col-form-label">Page Count</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="count" placeholder="Number of pages">
+    
+                            <div class="form-group row">
+                                <label for="pagecount" class="col-md-4 col-sm-2 col-form-label">Page Count</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text" v-model="offerForm.pagecount" class="form-control" id="pagecount" placeholder="Number of pages">
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="count" class="col-md-4 col-sm-2 col-form-label">MSRP</label>
-                            <div class="col-md-8 col-sm-10">
-                                <input type="text" class="form-control" id="MSRP" placeholder="Price">
+    
+                            <div class="form-group row">
+                                <label for="msrp" class="col-md-4 col-sm-2 col-form-label">MSRP</label>
+                                <div class="col-md-8 col-sm-10">
+                                    <input type="text" v-model="offerForm.msrp" class="form-control" id="msrp" placeholder="Price">
+                                </div>
                             </div>
-                        </div>
-                        <input type="submit" class="form-control btn btn-success" id="MSRP" placeholder="Price">
-                    </form>
+                            <input type="submit" class="form-control btn btn-success" id="MSRP" placeholder="Price">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
