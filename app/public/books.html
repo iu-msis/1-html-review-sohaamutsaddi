@@ -59,15 +59,20 @@
                                     <td>{{ s.publisher }}</td>
                                     <td>{{ s.pagecount }}</td>
                                     <td>{{ prettyDollar(s.msrp) }}</td>
+                                    <td>
+                                        <button v-on:click="handleEditOffer(s)"type="button" class="btn btn-outline-primary btn-sm">Edit</button>
+                                        <button v-on:click="postDeleteOffer(s)" type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </tbody>
                     </table> 
                 </div>
-                <h1 class="text-center pt-md-4">Add Books</h1>
+        
                 <div class="row my-4 mx-md-5 d-block">
                     <div class="col-md-4 col-md-offset-4 justify-content-center mx-auto">
-                        <form form v-on:submit.prevent="postNewOffer">
+                        <form form v-on:submit.prevent="postOffer">
+                            <h1  class="text-center pt-md-4">{{ selectedOffer === null ? "Add books" : "Edit books" }}</h1>
                             <div class="form-group row">
                                 <label for="title" class="col-md-4 col-sm-2 col-form-label">Title</label>
                                 <div class="col-md-8 col-sm-10">
@@ -109,7 +114,8 @@
                                     <input type="text" v-model="offerForm.msrp" class="form-control" id="msrp" placeholder="Price">
                                 </div>
                             </div>
-                            <input type="submit" class="form-control btn btn-success" id="MSRP" placeholder="Price">
+                            <button type="submit" class="m-1 btn btn-success">{{ selectedOffer === null ? "Add" : "Edit" }}</button> 
+                            <button v-if="selectedOffer" v-on:click="handleResetEdit" type="submit" class="btn btn-danger">Cancel Edit</button> 
                         </form>
                     </div>
                 </div>
