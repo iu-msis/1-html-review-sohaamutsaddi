@@ -2,7 +2,9 @@ const SomeApp = {
   data() {
     return {
       students: [],
-      offerForm: {}
+      offerForm: {},
+      selectedOffer: null,
+
     }
   },
   computed: {},
@@ -26,6 +28,48 @@ const SomeApp = {
           .catch( (err) => {
               console.error(err);
           })
+      },
+
+      postOffer(evt){
+        if(this.selectedOffer){
+            this.postEditOffer();
+        }
+        else{
+            this.postNewOffer();
+        }
+      },
+
+      postEditOffer(evt){
+        // if you want to update you need an id
+        this.offerForm.id = this.selectedOffer.id       
+        console.log("Updating:", this.offerForm);
+        
+        // send it to a different api
+        fetch('api/books/update.php', {
+            method:'POST',
+            body: JSON.stringify(this.offerForm),
+            headers: {
+              "Content-Type": "application/json; charset=utf-8"
+            }
+          })
+          .then( response => response.json() )
+          .then( json => {
+            console.log("Returned from post:", json);
+            this.offers = json;
+            
+            // clear out the form and selected offer
+            this.handleResetEdit();
+            this.fetchStudentData();
+        });
+      },
+
+      handleEditOffer(offer) {
+        this.selectedOffer = offer;
+        this.offerForm = Object.assign({}, this.selectedOffer); //set form to data
+      },
+      handleResetEdit(){
+        this.selectedOffer = null;
+        this.offerForm = {}
       },
       
       postNewOffer(evt) {
@@ -51,7 +95,36 @@ const SomeApp = {
             console.log("form reset");
             this.fetchStudentData()
           });
-      }
+      },
+
+      postDeleteOffer(offer){
+        if(!confirm("Are you sure you want to delete the book " +offer.title + "?")){
+            return;
+        } 
+        this.selectedOffer = offer;
+        // if you want to update you need an id
+        this.offerForm.id = this.selectedOffer.id       
+        console.log("Deleting:", this.offerForm);
+        
+        // send it to a different api
+        fetch('api/books/delete.php', {
+            method:'POST',
+            body: JSON.stringify(this.offerForm),
+            headers: {
+              "Content-Type": "application/json; charset=utf-8"
+            }
+          })
+          .then( response => response.json() )
+          .then( json => {
+            console.log("Returned from post:", json);
+            this.offers = json;
+            this.fetchStudentData();
+            console.log("Fetched")
+            // clear out the form and selected offer
+            this.handleResetEdit();
+           
+        });
+    },
   },
   created() {
       this.fetchStudentData();
